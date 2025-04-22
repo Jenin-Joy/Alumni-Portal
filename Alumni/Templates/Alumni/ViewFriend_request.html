@@ -1,0 +1,88 @@
+{% extends 'Alumni/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Friend Requests</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f8;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .table-section {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+
+        .btn-accept {
+            background-color: #198754;
+            color: white;
+        }
+
+        .btn-accept:hover {
+            background-color: #146c43;
+        }
+
+        .btn-chat {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .btn-chat:hover {
+            background-color: #084298;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-section">
+            <h2 class="text-center">Friend Requests</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in friend %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.student.student_name }}</td>
+                            <td>
+                                {% if i.request_status == 1 %}
+                                    <span class="badge bg-success">Accepted</span>
+                                    <a href="{% url 'Alumni:chatpage' i.student.id %}" class="btn btn-sm btn-chat ms-2">Chat</a>
+                                {% else %}
+                                    <a href="{% url 'Alumni:acceptfriendrequest' i.id %}" class="btn btn-sm btn-accept">Accept</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-muted">No friend requests yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}

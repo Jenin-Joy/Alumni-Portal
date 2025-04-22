@@ -1,0 +1,83 @@
+{% extends 'Guest/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header text-white bg-primary text-center">
+                    <h4 class="mb-0">Alumni Registration</h4>
+                </div>
+                <div class="card-body">
+                    <form enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" id="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea name="address" id="address" rows="3" class="form-control" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="contact" class="form-label">Contact</label>
+                            <input type="text" name="contact" id="contact" class="form-control" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="file_photo" class="form-label">Photo</label>
+                            <input type="file" name="file_photo" id="file_photo" class="form-control" accept="image/*">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="Batchid" class="form-label">Batch ID</label>
+                            <select name="Batchid" id="Batchid" class="form-select" required>
+                                <option value="">---SELECT---</option>
+                                {% for bat in batch %}
+                                <option value="{{ bat.id }}">{{ bat.batch_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small>Already have an account? 
+                        <a href="{% url 'Guest:login' %}">Login Here</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock content %}
