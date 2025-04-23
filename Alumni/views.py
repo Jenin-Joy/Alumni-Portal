@@ -207,20 +207,20 @@ def acceptfriendrequest(request,id):
 
 def chatpage(request,id):
     user  = tbl_student.objects.get(id=id)
-    return render(request,"Alumni/Chat.html",{"student":student})
+    return render(request,"Alumni/Chat.html",{"user":user})
 
 def ajaxchat(request):
     from_alumni = tbl_alumni.objects.get(id=request.session["alid"])
-    to_user = tbl_user.objects.get(id=request.POST.get("tid"))
-    tbl_chat.objects.create(chat_content=request.POST.get("msg"),chat_time=datetime.now(),alumni_from=from_alumni,user_to=to_user,chat_file=request.FILES.get("file"))
+    to_student = tbl_student.objects.get(id=request.POST.get("tid"))
+    tbl_chat.objects.create(chat_content=request.POST.get("msg"),chat_time=datetime.now(),alumni_from=from_alumni,student_to=to_student,chat_file=request.FILES.get("file"))
     return render(request,"Alumni/Chat.html")
 
 def ajaxchatview(request):
     tid = request.GET.get("tid")
     alumni = tbl_alumni.objects.get(id=request.session["alid"])
-    chat_data = tbl_chat.objects.filter((Q(alumni_from=alumni) | Q(alumni_to=alumni)) & (Q(user_from=tid) | Q(user_to=tid))).order_by('chat_time')
+    chat_data = tbl_chat.objects.filter((Q(alumni_from=alumni) | Q(alumni_to=alumni)) & (Q(student_from=tid) | Q(student_to=tid))).order_by('chat_time')
     return render(request,"Alumni/ChatView.html",{"data":chat_data,"tid":int(tid)})
 
 def clearchat(request):
-    tbl_chat.objects.filter(Q(alumni_from=request.session["alid"]) & Q(user_to=request.GET.get("tid")) | (Q(user_from=request.GET.get("tid")) & Q(alumni_to=request.session["alid"]))).delete()
+    tbl_chat.objects.filter(Q(alumni_from=request.session["alid"]) & Q(student_to=request.GET.get("tid")) | (Q(student_from=request.GET.get("tid")) & Q(alumni_to=request.session["alid"]))).delete()
     return JsonResponse({"msg":"Chat Deleted Sucessfully...."})
